@@ -183,9 +183,9 @@ public class CallFeaturesSetting extends PreferenceActivity
     private static final String BUTTON_TTY_KEY         = "button_tty_mode_key";
     private static final String BUTTON_HAC_KEY         = "button_hac_key";
     private static final String BUTTON_NOISE_SUPPRESSION_KEY = "button_noise_suppression_key";
-
     private static final String BUTTON_ENABLE_SUGGESTIONS = "button_enable_suggestions";
     private static final String BUTTON_ENABLE_REVERSE_LOOKUP = "button_enable_reverse_lookup";
+
 
     private static final String BUTTON_GSM_UMTS_OPTIONS = "button_gsm_more_expand_key";
     private static final String BUTTON_CDMA_OPTIONS = "button_cdma_more_expand_key";
@@ -514,6 +514,12 @@ public class CallFeaturesSetting extends PreferenceActivity
                 // TTY Mode change is not allowed during a VT call
                 showDialog(TTY_SET_RESPONSE_ERROR);
             }
+            return true;
+        } else if (preference == mButtonNoiseSuppression) {
+            int nsp = mButtonNoiseSuppression.isChecked() ? 1 : 0;
+            // Update Noise suppression value in Settings database
+            Settings.System.putInt(mPhone.getContext().getContentResolver(),
+                    Settings.System.NOISE_SUPPRESSION, nsp);
             return true;
         } else if (preference == mButtonNoiseSuppression) {
             int nsp = mButtonNoiseSuppression.isChecked() ? 1 : 0;
@@ -1690,6 +1696,15 @@ public class CallFeaturesSetting extends PreferenceActivity
             int flipAction = Settings.System.getInt(getContentResolver(),
                     Settings.System.FLIP_ACTION_KEY, 0);
             mFlipAction.setDefaultValue(String.valueOf(flipAction));
+        }
+
+        if (mButtonNoiseSuppression != null) {
+            if (getResources().getBoolean(R.bool.has_in_call_noise_suppression)) {
+                mButtonNoiseSuppression.setOnPreferenceChangeListener(this);
+            } else {
+                prefSet.removePreference(mButtonNoiseSuppression);
+                mButtonNoiseSuppression = null;
+            }
         }
 
         if (!getResources().getBoolean(R.bool.world_phone)) {
