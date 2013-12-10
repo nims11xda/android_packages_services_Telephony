@@ -60,6 +60,7 @@ public class Ringer {
     Ringtone mRingtone;
     Vibrator mVibrator;
     IPowerManager mPowerManager;
+    AudioManager mAudioManager;
     volatile boolean mContinueVibrating;
     VibratorThread mVibratorThread;
     Context mContext;
@@ -87,6 +88,7 @@ public class Ringer {
     private Ringer(Context context, BluetoothManager bluetoothManager) {
         mContext = context;
         mBluetoothManager = bluetoothManager;
+        mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         mPowerManager = IPowerManager.Stub.asInterface(
                 ServiceManager.getService(Context.POWER_SERVICE));
         // We don't rely on getSystemService(Context.VIBRATOR_SERVICE) to make sure this
@@ -171,10 +173,10 @@ public class Ringer {
             AudioManager audioManager =
                     (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
 
-            if (audioManager.getStreamVolume(AudioManager.STREAM_RING) == 0) {
             int ringerVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
-            if (ringerVolume == 0 && mRingerVolumeSetting <= 0
-                || QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_RINGER)) {
+
+            if (audioManager.getStreamVolume(AudioManager.STREAM_RING) == 0) {
+            if (ringerVolume == 0 || QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_RINGER)) {
                 if (DBG) log("skipping ring because volume is zero");
                 return;
             }
