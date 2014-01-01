@@ -300,6 +300,37 @@ public class PhoneInterfaceManager extends ITelephony.Stub {
         mApp.startActivity(intent);
     }
 
+    public void toggleLTE(boolean on) {
+        int network = -1;
+        boolean usesQcLte = SystemProperties.getBoolean(
+                        "ro.config.qc_lte_network_modes", false);
+
+        if (getLteOnGsmMode() != 0) {
+            if (on) {
+                network = mPhone.NT_MODE_LTE_GSM_WCDMA;
+            } else {
+                network = mPhone.NT_MODE_WCDMA_PREF;
+            }
+        } else if (usesQcLte) {
+            if (on) {
+                network = RILConstants.NETWORK_MODE_LTE_CDMA_EVDO;
+            } else {
+                network = mPhone.NT_MODE_CDMA;
+            }
+        } else {
+            if (on) {
+                network = mPhone.NT_MODE_GLOBAL;
+            } else {
+                network = mPhone.NT_MODE_CDMA;
+            }
+        }
+
+        mPhone.setPreferredNetworkType(network,
+                mMainThreadHandler.obtainMessage(CMD_TOGGLE_STATE));
+        android.provider.Settings.Global.putInt(mApp.getContentResolver(),
+                android.provider.Settings.Global.PREFERRED_NETWORK_MODE, network);
+    }
+
     public void toggleMobileNetwork(int networkStatus) {
         mPhone.setPreferredNetworkType(networkStatus,
                 mMainThreadHandler.obtainMessage(CMD_TOGGLE_STATE));
@@ -894,6 +925,10 @@ public class PhoneInterfaceManager extends ITelephony.Stub {
      */
     public boolean hasIccCard() {
         return mPhone.getIccCard().hasIccCard();
+    }
+
+    public int getLteOnGsmMode() {
+        return mPhone.getLteOnGsmMode();
     }
 
     /**
