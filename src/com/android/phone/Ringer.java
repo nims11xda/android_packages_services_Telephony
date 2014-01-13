@@ -61,7 +61,6 @@ public class Ringer {
     private final BluetoothManager mBluetoothManager;
     Ringtone mRingtone;
     Vibrator mVibrator;
-    AudioManager mAudioManager;
     IPowerManager mPowerManager;
     AudioManager mAudioManager;
     volatile boolean mContinueVibrating;
