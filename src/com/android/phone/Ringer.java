@@ -61,8 +61,8 @@ public class Ringer {
     private final BluetoothManager mBluetoothManager;
     Ringtone mRingtone;
     Vibrator mVibrator;
-    AudioManager mAudioManager;
     IPowerManager mPowerManager;
+    AudioManager mAudioManager;
     volatile boolean mContinueVibrating;
     VibratorThread mVibratorThread;
     Context mContext;
@@ -177,8 +177,8 @@ public class Ringer {
             }
 
             int ringerVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
-            if (ringerVolume == 0 && mRingerVolumeSetting <= 0
-                || QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_RINGER)) {
+
+            if (ringerVolume == 0 && mRingerVolumeSetting <= 0) {
                 if (DBG) log("skipping ring because volume is zero");
                 return;
             }
