@@ -896,10 +896,6 @@ public class PhoneInterfaceManager extends ITelephony.Stub {
         return mPhone.getIccCard().hasIccCard();
     }
 
-    public int getLteOnGsmMode() {
-        return mPhone.getLteOnGsmMode();
-    }
-
     /**
      * Return if the current radio is LTE on CDMA. This
      * is a tri-state return value as for a period of time
