@@ -301,7 +301,7 @@ public class CallFeaturesSetting extends PreferenceActivity
         CommandsInterface.CF_REASON_NOT_REACHABLE
     };
 
-    private static final CharSequence FLIP_ACTION_KEY = "flip_action";
+    private static final CharSequence FLIP_ACTION = "flip_action";
 
     private class VoiceMailProviderSettings {
         /**
@@ -611,7 +611,7 @@ public class CallFeaturesSetting extends PreferenceActivity
             handleSipCallOptionsChange(objValue);
         }else if (preference == mFlipAction) {
             int i = Integer.parseInt((String) objValue);
-            Settings.System.putInt(mPhone.getContext().getContentResolver(), Settings.System.FLIP_ACTION_KEY,
+            Settings.System.putInt(mPhone.getContext().getContentResolver(), Settings.System.FLIP_ACTION,
                     i);
             updateFlipActionSummary((String) objValue);
         }
@@ -1575,7 +1575,7 @@ public class CallFeaturesSetting extends PreferenceActivity
             initVoiceMailProviders();
         }
 
-        mFlipAction = (ListPreference) findPreference(FLIP_ACTION_KEY);
+        mFlipAction = (ListPreference) findPreference(FLIP_ACTION);
 
         if (mVibrateWhenRinging != null) {
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -1633,7 +1633,7 @@ public class CallFeaturesSetting extends PreferenceActivity
         if (mFlipAction != null) {
             mFlipAction.setOnPreferenceChangeListener(this);
             int flipAction = Settings.System.getInt(mPhone.getContext().getContentResolver(),
-                    Settings.System.FLIP_ACTION_KEY, 0);
+                    Settings.System.FLIP_ACTION, 0);
             mFlipAction.setValue(Integer.toString(flipAction));
         }
 
@@ -1866,7 +1866,7 @@ public class CallFeaturesSetting extends PreferenceActivity
 
         if (mFlipAction != null) {
             int flipAction = Settings.System.getInt(getContentResolver(),
-                    Settings.System.FLIP_ACTION_KEY, 0);
+                    Settings.System.FLIP_ACTION, 0);
             mFlipAction.setValue(Integer.toString(flipAction));
             updateFlipActionSummary(mFlipAction.getValue());
         }
