@@ -313,7 +313,7 @@ public class CallFeaturesSetting extends PreferenceActivity
         CommandsInterface.CF_REASON_NO_REPLY,
         CommandsInterface.CF_REASON_NOT_REACHABLE
     };
-    private static final CharSequence FLIP_ACTION_KEY = "flip_action";
+    private static final CharSequence FLIP_ACTION = "flip_action";
 
     private class VoiceMailProviderSettings {
         /**
@@ -651,7 +651,7 @@ public class CallFeaturesSetting extends PreferenceActivity
         if (mFlipAction != null) {
             String[] summaries = getResources().getStringArray(R.array.flip_action_summary_entries);
             mFlipAction.setSummary(getString(R.string.flip_action_summary, summaries[i]));
-            Settings.System.putInt(getContentResolver(), Settings.System.FLIP_ACTION_KEY,
+            Settings.System.putInt(getContentResolver(), Settings.System.FLIP_ACTION,
                     i);
         }
     }
@@ -1620,7 +1620,7 @@ public class CallFeaturesSetting extends PreferenceActivity
             initVoiceMailProviders();
         }
 
-        mFlipAction = (ListPreference) findPreference(FLIP_ACTION_KEY);
+        mFlipAction = (ListPreference) findPreference(FLIP_ACTION);
 
         if (mVibrateWhenRinging != null) {
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -1688,7 +1688,7 @@ public class CallFeaturesSetting extends PreferenceActivity
         if (mFlipAction != null) {
             mFlipAction.setOnPreferenceChangeListener(this);
             int flipAction = Settings.System.getInt(getContentResolver(),
-                    Settings.System.FLIP_ACTION_KEY, 0);
+                    Settings.System.FLIP_ACTION, 0);
             mFlipAction.setDefaultValue(String.valueOf(flipAction));
         }
 
