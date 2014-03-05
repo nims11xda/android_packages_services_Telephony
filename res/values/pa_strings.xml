@@ -66,10 +66,6 @@
         <item>@string/summary_dismiss_call</item>
     </string-array>
 
-    <!-- Noise suppression -->
-    <string name="noise_suppression_title">Noise suppression</string>
-    <string name="noise_suppression_summary">Enable noise suppression for calls</string>
-
     <!-- Integrated phone directory -->
     <string name="enable_suggestions_title">Enable suggestions</string>
     <string name="enable_suggestions_summary">Suggest phone number of nearby places when searching in the dialer</string>
